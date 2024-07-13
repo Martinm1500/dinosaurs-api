@@ -1,14 +1,8 @@
 package dev.martin1500.controller;
 
+import dev.martin1500.exception.ResourceNotFoundException;
 import dev.martin1500.model.Dinosaur;
 import dev.martin1500.service.DinosaurServiceImpl;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/dinosaurs")
-@Tag(name = "Dinosaur Controller", description = "Controller for managing dinosaur operations")
 public class DinosaurController {
 
     private final DinosaurServiceImpl dinosaurService;
@@ -28,18 +21,18 @@ public class DinosaurController {
     }
 
     @PostMapping
-    @Operation(summary = "Create Dinosaur", description = "Endpoint to create a new dinosaur")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successful operation",
-                    content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Dinosaur.class))),
-            @ApiResponse(responseCode = "400", description = "Invalid input"),
-            @ApiResponse(responseCode = "500", description = "Internal server error")
-    })
-    public ResponseEntity<?> create(
-            @Parameter(description = "Dinosaur object to be created", required = true)
-            @Valid @RequestBody Dinosaur dinosaur) {
+    public ResponseEntity<?> create(@Valid @RequestBody Dinosaur dinosaur) {
         dinosaurService.create(dinosaur);
         return ResponseEntity.status(HttpStatus.OK).body(dinosaur);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getById(@PathVariable Long id){
+        try{
+            Dinosaur dinosaur = dinosaurService.get(id);
+            return ResponseEntity.status(HttpStatus.OK).body(dinosaur);
+        }catch (ResourceNotFoundException ex){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+        }
     }
 }

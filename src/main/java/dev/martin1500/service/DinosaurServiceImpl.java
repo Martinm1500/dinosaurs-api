@@ -1,5 +1,6 @@
 package dev.martin1500.service;
 
+import dev.martin1500.exception.ErrorMessage;
 import dev.martin1500.exception.ResourceNotFoundException;
 import dev.martin1500.model.Dinosaur;
 import dev.martin1500.repository.DinosaurRepository;
@@ -30,12 +31,12 @@ public class DinosaurServiceImpl implements DinosaurService{
     }
 
     @Override
-    public Optional<Dinosaur> get(Long id) {
+    public Dinosaur get(Long id) {
         Optional<Dinosaur> optionalDinosaur = dinosaurRepository.findById(id);
         if(optionalDinosaur.isEmpty()){
-            throw new ResourceNotFoundException("Resource Not Found");
+            throw new ResourceNotFoundException(ErrorMessage.ResourceNotFound);
         }
-        return Optional.empty();
+        return optionalDinosaur.get();
     }
 
     @Override
@@ -43,7 +44,7 @@ public class DinosaurServiceImpl implements DinosaurService{
         if(dinosaurRepository.existsById(id)){
            dinosaurRepository.save(dinosaur);
         }else{
-            throw new ResourceNotFoundException("Resource Not Found");
+            throw new ResourceNotFoundException(ErrorMessage.ResourceNotFound);
         }
 
     }
@@ -53,7 +54,7 @@ public class DinosaurServiceImpl implements DinosaurService{
         if(dinosaurRepository.existsById(id)){
             dinosaurRepository.deleteById(id);
         }else{
-            throw new ResourceNotFoundException("Resource Not Found");
+            throw new ResourceNotFoundException(ErrorMessage.ResourceNotFound);
         }
     }
 }

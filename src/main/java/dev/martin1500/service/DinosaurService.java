@@ -1,9 +1,8 @@
 package dev.martin1500.service;
 
 import dev.martin1500.model.Dinosaur;
-
 import java.util.List;
-import java.util.Optional;
+
 
 public interface DinosaurService {
 
@@ -11,7 +10,7 @@ public interface DinosaurService {
 
     void create(Dinosaur dinosaur);
 
-    Optional<Dinosaur> get(Long id);
+    Dinosaur get(Long id);
 
     void update(Dinosaur dinosaur, Long id);
 
