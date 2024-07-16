@@ -12,7 +12,7 @@ public interface DinosaurService {
 
     Dinosaur get(Long id);
 
-    void update(Dinosaur dinosaur, Long id);
+    Dinosaur update(Dinosaur dinosaur, Long id);
 
     void delete(Long id);
 }

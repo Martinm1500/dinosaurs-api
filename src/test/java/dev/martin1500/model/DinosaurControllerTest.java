@@ -150,7 +150,7 @@ public class DinosaurControllerTest {
         String dinosaurJson = objectMapper.writeValueAsString(validDinosaur);
 
         // Mock the repository response
-        given(repository.existsById(validId)).willReturn(true);
+        given(repository.findById(validId)).willReturn(Optional.of(validDinosaur));
         given(repository.save(validDinosaur)).willReturn(validDinosaur);
 
         mockMvc.perform(put("/api/v1/dinosaurs/{id}", validId)
@@ -224,7 +224,7 @@ public class DinosaurControllerTest {
         String dinosaurJson = objectMapper.writeValueAsString(validDinosaur);
 
         // Mock the repository response
-        given(repository.existsById(invalidId)).willReturn(false);
+        given(repository.findById(invalidId)).willReturn(Optional.empty());
 
         mockMvc.perform(put("/api/v1/dinosaurs/{id}", invalidId)
                         .contentType(MediaType.APPLICATION_JSON)

@@ -35,4 +35,14 @@ public class DinosaurController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
         }
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody Dinosaur dinosaur){
+        try{
+            Dinosaur updated = dinosaurService.update(dinosaur,id);
+            return ResponseEntity.status(HttpStatus.OK).body(updated);
+        }catch (ResourceNotFoundException ex){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+        }
+    }
 }

@@ -40,13 +40,14 @@ public class DinosaurServiceImpl implements DinosaurService{
     }
 
     @Override
-    public void update(Dinosaur dinosaur, Long id) {
-        if(dinosaurRepository.existsById(id)){
-           dinosaurRepository.save(dinosaur);
+    public Dinosaur update(Dinosaur dinosaur, Long id) {
+        Optional<Dinosaur> existing= dinosaurRepository.findById(id);
+        if(existing.isPresent()){
+            dinosaur.setId(id);
+            return dinosaurRepository.save(dinosaur);
         }else{
             throw new ResourceNotFoundException(ErrorMessage.ResourceNotFound);
         }
-
     }
 
     @Override
