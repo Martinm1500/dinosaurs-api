@@ -37,7 +37,7 @@ public class DinosaurController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody Dinosaur dinosaur){
+    public ResponseEntity<?> updateDinosaur(@PathVariable Long id, @Valid @RequestBody Dinosaur dinosaur){
         try{
             Dinosaur updated = dinosaurService.update(dinosaur,id);
             return ResponseEntity.status(HttpStatus.OK).body(updated);
