@@ -130,13 +130,105 @@ public class DinosaurControllerTest {
 
     @Test
     public void shouldNotFindDinosaurWhenGivenInvalidId() throws Exception {
-        Long dinosaurId = 1L;
+        Long invalidId = 1L;
 
         // Mock the repository response
-        given(repository.findById(dinosaurId)).willReturn(Optional.empty());
+        given(repository.findById(invalidId)).willReturn(Optional.empty());
 
-        mockMvc.perform(get("/api/v1/dinosaurs/{id}", dinosaurId)
+        mockMvc.perform(get("/api/v1/dinosaurs/{id}", invalidId)
                         .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+    }
+    //Tests for the endpoint updateDinosaur
+    @Test
+    public void shouldUpdateDinosaurWhenGivenValidDinosaur() throws Exception {
+        // Arrange
+        Long validId = 1L;
+        Dinosaur validDinosaur = createValidDinosaur();
+        validDinosaur.setId(validId);
+
+        String dinosaurJson = objectMapper.writeValueAsString(validDinosaur);
+
+        // Mock the repository response
+        given(repository.existsById(validId)).willReturn(true);
+        given(repository.save(validDinosaur)).willReturn(validDinosaur);
+
+        mockMvc.perform(put("/api/v1/dinosaurs/{id}", validId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(dinosaurJson))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.dinoOrder").value(VALID_ORDER))
+                .andExpect(jsonPath("$.dinoSubOrder").value(VALID_SUB_ORDER))
+                .andExpect(jsonPath("$.geologicalPeriod").value(VALID_PERIOD))
+                .andExpect(jsonPath("$.species").value(SPECIES))
+                .andExpect(jsonPath("$.sizeWeight").value(SIZE_WEIGHT))
+                .andExpect(jsonPath("$.physiology").value(PHYSIOLOGY))
+                .andExpect(jsonPath("$.habitat").value(HABITAT))
+                .andExpect(jsonPath("$.diet").value(DIET))
+                .andExpect(jsonPath("$.discovery").value(DISCOVERY));
+    }
+
+    @Test
+    public void shouldNotUpdateDinosaurWhenGivenDinosaurWithInvalidField() throws Exception {
+        // Arrange
+        Long validId = 1L;
+        Dinosaur dinosaur = new Dinosaur();
+        dinosaur.setDinoOrder("INVALID_ORDER");
+        dinosaur.setDinoSubOrder(VALID_SUB_ORDER);
+        dinosaur.setGeologicalPeriod(VALID_PERIOD);
+        dinosaur.setSpecies(SPECIES);
+
+        String dinosaurJson = objectMapper.writeValueAsString(dinosaur);
+
+        // Mock the repository response
+        given(repository.existsById(validId)).willReturn(true);
+
+        mockMvc.perform(put("/api/v1/dinosaurs/{id}", validId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(dinosaurJson))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.errors.dinoOrder").value(ErrorMessage.invalidOrder));
+    }
+
+    @Test
+    public void shouldNotUpdateDinosaurWhenGivenDinosaurWithMissingField() throws Exception {
+        // Arrange
+        Long validId = 1L;
+        Dinosaur dinosaur = new Dinosaur();
+        dinosaur.setDinoOrder(VALID_ORDER);
+        dinosaur.setSpecies(SPECIES);
+
+        String dinosaurJson = objectMapper.writeValueAsString(dinosaur);
+
+        // Mock the repository response
+        given(repository.existsById(validId)).willReturn(true);
+
+        mockMvc.perform(put("/api/v1/dinosaurs/{id}", validId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(dinosaurJson))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.errors.dinoSubOrder").value(ErrorMessage.subOrderIsRequired))
+                .andExpect(jsonPath("$.errors.geologicalPeriod").value(ErrorMessage.geologicalPeriodIsRequired));
+    }
+
+    @Test
+    public void shouldNotUpdateDinosaurWhenGivenInvalidId() throws Exception {
+        // Arrange
+        Long invalidId = 999L;
+        Dinosaur validDinosaur = createValidDinosaur();
+        validDinosaur.setId(invalidId);
+
+        String dinosaurJson = objectMapper.writeValueAsString(validDinosaur);
+
+        // Mock the repository response
+        given(repository.existsById(invalidId)).willReturn(false);
+
+        mockMvc.perform(put("/api/v1/dinosaurs/{id}", invalidId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(dinosaurJson))
                 .andExpect(status().isNotFound());
     }
 
