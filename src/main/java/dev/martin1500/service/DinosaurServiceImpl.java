@@ -61,11 +61,11 @@ public class DinosaurServiceImpl implements DinosaurService{
 
     @Override
     public List<Dinosaur> findByPeriod(String period) {
-        return null;
+        return dinosaurRepository.findByPeriod(period);
     }
 
     @Override
     public List<Dinosaur> findByDiet(String diet) {
-        return null;
+        return dinosaurRepository.findByDiet(diet);
     }
 }

@@ -3,7 +3,6 @@ package dev.martin1500.service;
 import dev.martin1500.model.Dinosaur;
 import java.util.List;
 
-
 public interface DinosaurService {
 
     List<Dinosaur> list();

@@ -38,12 +38,12 @@ public class DinosaurController {
 
     @GetMapping("/period")
     public ResponseEntity<?> findByPeriod(@RequestParam String period) {
-        return null;
+        return ResponseEntity.status(HttpStatus.OK).body(dinosaurService.findByPeriod(period));
     }
 
     @GetMapping("/diet")
     public ResponseEntity<?> findByDiet(@RequestParam String diet) {
-        return null;
+        return ResponseEntity.status(HttpStatus.OK).body(dinosaurService.findByPeriod(diet));
     }
 
 
