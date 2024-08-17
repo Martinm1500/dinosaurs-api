@@ -58,4 +58,14 @@ public class DinosaurServiceImpl implements DinosaurService{
             throw new ResourceNotFoundException(ErrorMessage.ResourceNotFound);
         }
     }
+
+    @Override
+    public List<Dinosaur> findByPeriod(String period) {
+        return null;
+    }
+
+    @Override
+    public List<Dinosaur> findByDiet(String diet) {
+        return null;
+    }
 }

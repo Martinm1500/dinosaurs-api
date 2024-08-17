@@ -28,12 +28,16 @@ public class Dinosaur {
     @NotNull(message = "The 'GeologicalPeriod' is required.")
     private String geologicalPeriod;
 
+    @ValidEnum(enumClass = DinoDiet.class, message = "The 'Diet' must be HERBIVORE, CARNIVORE, or OMNIVORE.")
+    @NotNull(message = "The 'Diet' is required.")
+    private String diet;
+
     @NotBlank(message = "The 'Species' cannot be Blank, Empty or Null.")
     private String species;
+
 
     private String sizeWeight;
     private String physiology;
     private String habitat;
-    private String diet;
     private String discovery;
 }

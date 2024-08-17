@@ -15,4 +15,8 @@ public interface DinosaurService {
     Dinosaur update(Dinosaur dinosaur, Long id);
 
     void delete(Long id);
+
+    List<Dinosaur> findByPeriod(String period);
+
+    List<Dinosaur> findByDiet(String diet);
 }
