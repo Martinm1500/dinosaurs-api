@@ -38,7 +38,7 @@ public class DinosaurControllerTest {
     private static final String SIZE_WEIGHT = "Large";
     private static final String PHYSIOLOGY = "Endothermic";
     private static final String HABITAT = "Forests";
-    private static final String DIET = "Carnivore";
+    private static final String DIET = "CARNIVORE";
     private static final String DISCOVERY = "Discovered in 1902";
 
     //Tests for the endpoint createDinosaur
