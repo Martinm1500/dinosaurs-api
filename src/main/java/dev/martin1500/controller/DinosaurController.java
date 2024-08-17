@@ -36,6 +36,16 @@ public class DinosaurController {
         }
     }
 
+    @GetMapping("/period")
+    public ResponseEntity<?> findByPeriod(@RequestParam String period) {
+        return null;
+    }
+
+    @GetMapping("/diet")
+    public ResponseEntity<?> findByDiet(@RequestParam String diet) {
+        return null;
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<?> updateDinosaur(@PathVariable Long id, @Valid @RequestBody Dinosaur dinosaur){
         try{
